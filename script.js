@@ -1,58 +1,70 @@
 'use strict';
 
-let  title = 'glo-academy-course-JS',
-     screens = 'Простые, Сложные, Интерактивные',
-     screenPrice = 1276,
-     rollback = 56,
-     fullPrice = 3000000,
-     adaptive = true;
-
-console.log(typeof title);
-
-console.log(typeof fullPrice);
-
-console.log(typeof adaptive);
-
-console.log(screens.length);
-
-console.log('Стоимость верстки экранов' + ' ' + screenPrice + ' '  + 'рублей/ долларов/гривен/юани');
-
-console.log('Стоимость разработки сайта' + ' ' + fullPrice + ' '  + 'рублей/ долларов/гривен/юани');
-
-console.log(screens.toLowerCase().split(', '));
-
-console.log('Процент отката посреднику за работу' + ' ' + (fullPrice * (rollback/100)));
-
-
-//lesson 3
-
-title = prompt('Как называется ваш проект?');
-
-screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные');
-
-screenPrice = +prompt('Сколько будет стоить данная работа?');
-
-adaptive = confirm('Нужен ли адаптив на сайте?');
-
+let title = prompt('Как называется ваш проект?');
+let screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные');
+let screenPrice = +prompt('Сколько будет стоить данная работа?');
+let adaptive=  confirm('Нужен ли адаптив на сайте?');
 let service1 = prompt('Какой дополнительный тип услуги нужен?');
-let servicePrice1 = +prompt('Сколько это будет стоить?');
-let service2 = prompt('Какой дополнительный тип услуги нужен?');
+let servicePrice1=  +prompt('Сколько это будет стоить?');
+let service2=  prompt('Какой дополнительный тип услуги нужен?');
 let servicePrice2 = +prompt('Сколько это будет стоить?');
-
-fullPrice = screenPrice + servicePrice1 + servicePrice2;
-
+let rollback = 10;
+let fullPrice = screenPrice + servicePrice1 + servicePrice2;
 let servicePercentPrice = Math.floor(fullPrice - rollback);
+let allServicePrices = ''
 
-console.log(servicePercentPrice);
 
-if(fullPrice >= 30000){
-    alert('Даем скидку в 10%');
-} else if(fullPrice >= 15000 && fullPrice < 30000){
-    alert('Даем скидку в 5%');
-} else if(fullPrice < 15000){
-    alert('Скидка не предусмотрена');
-}else if(fullPrice < 0){
-    alert('Что то пошло не так');
+const showTypeOf = function(variable){
+    console.log(variable, typeof variable);
 }
+
+const getRollbackMessage = function(price){
+    if(price >= 30000){
+        return 'Даем скидку в 10%'
+    } else if(price >= 15000 && price < 30000){
+        return 'Даем скидку в 5%';
+    } else if(price < 15000){
+        return 'Скидка не предусмотрена';
+    }else if(price < 0){
+        return 'Что то пошло не так';
+    }
+}
+
+showTypeOf(title)
+showTypeOf(screenPrice)
+showTypeOf(adaptive)
+
+const getAllServicePrices = function(servPriceOne, servPriceTwo){
+   return servPriceOne + servPriceTwo
+} 
+
+allServicePrices = getAllServicePrices(servicePrice1, servicePrice2)
+
+function getFullPrice(priceScreen, priceServiceAll){
+     return  priceScreen + priceServiceAll
+}
+
+fullPrice = getFullPrice(screenPrice, allServicePrices)
+
+const getTitle = function(head){
+    let tit = head.trim()
+    return tit.charAt(0).toUpperCase() + tit.slice(1).toLowerCase()
+}
+
+title = getTitle(title)
+
+let getServicePercentPrices = function(priceFull, roll){
+   return  priceFull - roll
+}
+
+servicePercentPrice = getServicePercentPrices(fullPrice, rollback)
+
+
+console.log(screens.split(', ')); // массив screens 
+
+console.log(getRollbackMessage(fullPrice)); // сообщение о скидке пользователю
+
+console.log('Процент отката посреднику за работу' + ' ' + servicePercentPrice);
+
 
 
