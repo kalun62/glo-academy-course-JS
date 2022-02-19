@@ -30,5 +30,3 @@ let part = document.createElement('li')
 part.textContent = 'Глава 8: За пределами ES6'
 
 partBook6[8].append(part)
-
-console.log(partBook6);
