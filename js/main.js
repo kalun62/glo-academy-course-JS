@@ -32,12 +32,12 @@ const appData = {
     servicePricesNumber: 0,
     servicesPercent: {},
     servicesNumber: {},
+
     init: function () {
-        appData.addTitle()
-        buttonPlus.addEventListener('click', appData.addScreenBlock)
-        startBtn.addEventListener('click',  appData.resutlAddScreen);
+        this.addTitle()
+        buttonPlus.addEventListener('click', this.addScreenBlock)
+        startBtn.addEventListener('click',  this.resutlAddScreen);
         inputRange.addEventListener('input', this.rollbackInputCount)
-        console.log(screens);
     },
 
     addTitle: function () {
@@ -45,25 +45,23 @@ const appData = {
     },
 
     start: function () {
-        appData.addScreens()
-        appData.addServices()
-        appData.addPrices()
-        appData.showResult()
-
-        // appData.logger()
+        this.addScreens()
+        this.addServices()
+        this.addPrices()
+        this.showResult()
     },
 
     addScreens: function () {
-        appData.screens.length = 0
+        this.screens.length = 0
         screens = document.querySelectorAll('.screen')
 
-        screens.forEach(function (screen, index) {
+        screens.forEach((screen, index) => {
             const select = screen.querySelector('select')
             const input = screen.querySelector('input')
             const selectName = select.options[select.selectedIndex].textContent
             const count = input.value
 
-            appData.screens.push({
+            this.screens.push({
                 id: index,
                 name: selectName,
                 count: count,
@@ -71,49 +69,49 @@ const appData = {
             })
         })
 
-        if(appData.screens.find(item => item.price === 0)) return false
+        if(this.screens.find(item => item.price === 0)) return false
         else return true
     },
 
     resutlAddScreen: function() {
         if(appData.addScreens() !== true){
-          alert("Не выбран тип или количество экранов");  
+          alert("Не выбран тип или количество экранов");  // доделать this 
         } else  appData.start();
     },
 
     rollbackInputCount: function() {
         inputRangeValue.textContent = inputRange.value + '%'
-        return appData.rollback = inputRange.value
+        return appData.rollback = inputRange.value              // доделать this 
     },
 
     addServices: function () {
-        otherItemsPercent.forEach(function (item) {
+        otherItemsPercent.forEach((item) => {
             const check = item.querySelector('input[type=checkbox]')
             const label = item.querySelector('label')
             const input = item.querySelector('input[type=text]')
 
             if (check.checked) {
-                appData.servicesPercent[label.textContent] = +input.value
+                this.servicesPercent[label.textContent] = +input.value
             }
         })
 
-        otherItemsNumber.forEach(function (item) {
+        otherItemsNumber.forEach((item) => {
             const check = item.querySelector('input[type=checkbox]')
             const label = item.querySelector('label')
             const input = item.querySelector('input[type=text]')
 
             if (check.checked) {
-                appData.servicesNumber[label.textContent] = +input.value
+                this.servicesNumber[label.textContent] = +input.value
             }
         })
     },
 
     showResult: function () {
-        total.value = appData.screenPrice
-        totalCount.value = appData.screensCount
-        totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
-        fullTotalCount.value = appData.fullPrice
-        totalCountRollback.value = appData.servicePercentPrice
+        total.value = this.screenPrice
+        totalCount.value = this.screensCount
+        totalCountOther.value = this.servicePricesPercent + this.servicePricesNumber
+        fullTotalCount.value = this.fullPrice
+        totalCountRollback.value = this.servicePercentPrice
     },
 
     addScreenBlock: function () {
@@ -122,32 +120,27 @@ const appData = {
     },
 
     addPrices: function () {
-        for (let screen of appData.screens) {
-            appData.screenPrice += +screen.price
+        for (let screen of this.screens) {
+            this.screenPrice += +screen.price
         }
 
-        for (let screen of appData.screens) {
-            appData.screensCount += +screen.count
+        for (let screen of this.screens) {
+            this.screensCount += +screen.count
         }
 
-        for (let key in appData.servicesNumber) {
-            appData.servicePricesNumber += appData.servicesNumber[key]
+        for (let key in this.servicesNumber) {
+            this.servicePricesNumber += this.servicesNumber[key]
         }
 
-        for (let key in appData.servicesPercent) {
-            appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key])
+        for (let key in this.servicesPercent) {
+            this.servicePricesPercent += this.screenPrice * (this.servicesPercent[key] / 100)
         }
 
-        appData.fullPrice = +appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent
+        this.fullPrice = +this.screenPrice + this.servicePricesNumber + this.servicePricesPercent
 
-        appData.servicePercentPrice = appData.fullPrice + (appData.fullPrice * (appData.rollback / 100))
+        this.servicePercentPrice = this.fullPrice + (this.fullPrice * (this.rollback / 100))
     },
 
-    logger: function () {
-        console.log(appData.fullPrice);
-        console.log(appData.servicePercentPrice);
-        console.log(appData.screens);
-    },
 }
 
 appData.init()
